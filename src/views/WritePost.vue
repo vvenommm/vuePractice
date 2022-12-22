@@ -92,7 +92,7 @@ export default {
 
     console.log("post", post);
     return {
-        category,
+        // category,
         post,
         writingPost,
         catList
@@ -129,7 +129,7 @@ export default {
       </div>
     </div>
     <div class="row p-3">
-      <textarea row="20" cols="50" required></textarea>
+      <textarea v-model="post.contents" row="20" cols="50" required></textarea>
     </div>
     <div class="hstack gap-3">
       <div class="ms-auto">
