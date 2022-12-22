@@ -7,6 +7,7 @@ import BoardList from "@/views/BoardList.vue";
 
 // const route = useRoute();
 
+
 export default {
   //   props: ['category', 'title', 'contents', 'writer'],
   //   props: {
@@ -46,6 +47,9 @@ export default {
     //     console.log("title : ", post.title);
     //     console.log("contents : ", props.contents);
     //     console.log("writer : ", props.writer);
+    let category = "";
+
+
     const catList = [
       {
         text: "말머리",
@@ -53,15 +57,15 @@ export default {
       },
       {
         text: "질문",
-        value: "q",
+        value: "질문",
       },
       {
         text: "자유",
-        value: "f",
+        value: "자유",
       },
       {
         text: "기타",
-        value: "e",
+        value: "기타",
       },
     ];
 
@@ -76,24 +80,29 @@ export default {
     };
 
     const writingPost = (category, title, writer, contents) => {
+        console.log({category});
+        console.log(`{category}`);
+        console.log(category);
+        console.log(window.category);
       post[category] = category;
       post[title] = title;
       post[writer] = writer;
       post[contents] = contents;
     };
 
-    console.log(post);
+    console.log("post", post);
     return {
-      post,
-      writingPost,
-      catList
+        category,
+        post,
+        writingPost,
+        catList
     };
-  },
+},
 };
 </script>
 
 <template>
-  <p>{{ post.category }}</p>
+  <p>category : {{ post.category }}</p>
   <div class="card">
     <div class="row m-3">
       <div class="col-3">
@@ -103,7 +112,7 @@ export default {
           <option value="f">자유</option>
           <option value="e">기타</option>
         </select> -->
-        <select v-model="post">
+        <select v-model="post.category">
             <option v-for="cat in catList" v-bind:key="cat.text" :value="cat.value">{{ cat.text }}</option>
         </select>
       </div>
