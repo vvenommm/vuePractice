@@ -1,12 +1,12 @@
 <script>
 import { useRoute } from "vue-router";
-import BoardList from "@/views/BoardList.vue";
+import data from "@/data";
 
 // ref -> number, string
 // reactive -> {}
 
 // const route = useRoute();
-console.log("board : ", BoardList.posts);
+console.log("board : ", data.Posts);
 
 export default {
   //   props: ['category', 'title', 'contents', 'writer'],
@@ -79,22 +79,23 @@ export default {
       views: 0,
     };
 
-    const writingPost = (category, title, writer, contents) => {
-        console.log({category});
-        console.log(`{category}`);
-        console.log(category);
-        console.log(window.category);
-      post[category] = category;
-      post[title] = title;
-      post[writer] = writer;
-      post[contents] = contents;
-    };
+    // const writingPost = (category, title, writer, contents) => {
+    //     console.log({category});
+    //     console.log(`{category}`);
+    //     console.log(category);
+    //     console.log(window.category);
+    //   post[category] = category;
+    //   post[title] = title;
+    //   post[writer] = writer;
+    //   post[contents] = contents;
+    // };
 
     console.log("post", post);
     return {
         // category,
+        posts:data.Posts,
         post,
-        writingPost,
+        // writingPost,
         catList
     };
 },
@@ -102,7 +103,8 @@ export default {
 </script>
 
 <template>
-  <p>category : {{ post.category }}</p>
+  <!-- <p>category : {{ posts[0] }}</p> -->
+  <!-- <p>category : {{ posts[posts.size] }}</p> 이건 안 됨 -->
   <div class="card">
     <div class="row m-3">
       <div class="col-3">
@@ -113,7 +115,7 @@ export default {
           <option value="e">기타</option>
         </select> -->
         <select v-model="post.category">
-            <option v-for="cat in catList" v-bind:key="cat.text" :value="cat.value">{{ cat.text }}</option>
+            <option v-for="cat in catList" :value="cat.value">{{ cat.text }}</option>
         </select>
       </div>
       <div class="col-7">
@@ -133,7 +135,7 @@ export default {
     </div>
     <div class="hstack gap-3">
       <div class="ms-auto">
-        <button @click="writingPost()">글등록</button>
+        <button @click="posts.push(post)">글등록</button>
       </div>
       <div class="ms-auto">
         <button @click="$router.push('/')">글목록</button>
