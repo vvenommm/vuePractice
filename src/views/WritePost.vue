@@ -6,7 +6,7 @@ import BoardList from "@/views/BoardList.vue";
 // reactive -> {}
 
 // const route = useRoute();
-
+console.log("board : ", BoardList.posts);
 
 export default {
   //   props: ['category', 'title', 'contents', 'writer'],
