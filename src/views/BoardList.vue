@@ -1,12 +1,12 @@
 <script setup>
-import { onMounted, reactive } from 'vue'
-import data from '@/data'
+import { onMounted, reactive } from 'vue';
+import data from '@/data';
 
-console.log('BoardList - posts : ', data.Posts)
+console.log('BoardList - posts : ', data.Posts);
 
 onMounted(() => {
-  console.log('마운트 성공')
-})
+  console.log('마운트 성공');
+});
 </script>
 
 <template>
@@ -24,7 +24,8 @@ onMounted(() => {
         </tr>
       </thead>
       <tbody id="tb_body">
-        <tr v-for="post in data.Posts" :key="post">
+        <!-- key는 항상 유일값으로 적어줌 v-model은 알아서 연결해줌. v-bind:~은 직접 연결이며 :~만 적어도 됨-->
+        <tr v-for="post in data.Posts" :key="post.bnum">
           <td><input type="checkbox" /></td>
           <td>{{ post.bnum }}</td>
           <td>{{ post.category }}</td>

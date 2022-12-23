@@ -1,12 +1,13 @@
 <script setup>
-import { ref } from 'vue'
-import data from '@/data'
+import { ref } from 'vue';
+import data from '@/data';
+import { useRouter } from 'vue-router';
 
 // ref -> number, string
 // reactive -> {}
 
 // const route = useRoute();
-console.log('WritePost - board : ', data.Posts)
+console.log('WritePost - board : ', data.Posts);
 
 const catList = [
   {
@@ -21,9 +22,10 @@ const catList = [
     text: '기타',
     value: '기타',
   },
-]
+];
 
 const post = ref({
+  bnum: 0,
   category: '',
   title: '',
   writer: '',
@@ -31,15 +33,28 @@ const post = ref({
   dates: '22/12/22',
   comments: 0,
   views: 0,
-})
+});
 
 const addPost = () => {
-  console.log('before push --', data)
-  data.Posts.push(post.value)
-  console.log('after push --', data)
-}
+  post.value.bnum = data.Posts.length;
+  console.log('작성한 글', post);
+  console.log('before push --', data);
+  console.log('before length --', data.Posts.length);
+  var cnt = data.Posts.push(post.value);
+  console.log('결과 ', cnt);
+  console.log('after push --', data);
+  if (parseInt(cnt) == post.value.bnum + 1) {
+    const router = useRouter();
+    // router.push({ name: 'Read', params: { bnum: post.value.bnum } });
+    router.push({ path: '/' });
 
-console.log('post', post)
+    // router.replace({ path: '/' });
+  } else {
+    alert('오류 발생');
+  }
+};
+
+console.log('post', post);
 </script>
 
 <template>
@@ -48,7 +63,8 @@ console.log('post', post)
     <div class="row m-3">
       <div class="col-3">
         <select v-model="post.category">
-          <option v-for="cat in catList" :key="cat" :value="cat.value">
+          <option value="">-- 말머리 --</option>
+          <option v-for="cat in catList" :key="cat.text" :value="cat.value">
             {{ cat.text }}
           </option>
         </select>
@@ -76,7 +92,6 @@ console.log('post', post)
     <div class="hstack gap-3">
       <div class="ms-auto">
         <button @click="addPost()">글등록</button>
-        <button @click="data.push(post)">글등록2</button>
       </div>
       <div class="ms-auto">
         <button @click="$router.push('/')">글목록</button>

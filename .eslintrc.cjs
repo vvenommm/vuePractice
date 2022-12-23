@@ -21,7 +21,7 @@ module.exports = {
       'error', // 아레 객체로 만든 규칙을 어길경우 error로 표시한다는 의미
       {
         singleQuote: true,
-        semi: false,
+        semi: true,
         tabWidth: 2,
         trailingComma: 'all',
         printWidth: 80,
