@@ -33,3 +33,14 @@ npm run build
 ```sh
 npm run lint
 ```
+
+### 이벤트 관련
+.enter -> input type=text @keyup.enter ... : 검색 시 엔터 쳤을 때 이벤
+.tab
+.delete
+.esc
+.space
+.up
+.down
+.left
+.right

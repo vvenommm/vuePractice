@@ -1,11 +1,16 @@
 <script setup>
 import { onMounted, reactive } from 'vue';
 import data from '@/data';
+import { getPosts } from '@/axios';
+import axios from 'axios';
 
-console.log('BoardList - posts : ', data.Posts);
+// console.log('BoardList - posts : ', data.Posts);
 
 onMounted(() => {
   console.log('마운트 성공');
+  axios.get('http://localhost:8080/main').then(response => {
+    console.log('boardList : ', response.data);
+  });
 });
 </script>
 

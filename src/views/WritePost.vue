@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import data from '@/data';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 // ref -> number, string
 // reactive -> {}
