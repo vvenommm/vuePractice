@@ -1,72 +1,12 @@
 <script setup>
-import { onMounted, reactive } from "vue";
-import data from '@/data';
+import { onMounted, reactive } from 'vue'
+import data from '@/data'
 
-console.log("posts : ", data.Posts);
-// var posts = reactive([
-//   {
-//     bnum: 1,
-//     category: "자유",
-//     title: "1번 글입니다.",
-//     writer: "writer1",
-//     contents: "dkfkfl",
-//     dates: "22/12/21",
-//     comments: 4,
-//     views: 4,
-//   },
-//   {
-//     bnum: 2,
-//     category: "자유",
-//     title: "2번 글입니다.",
-//     writer: "writer2",
-//     contents: "dkfkfl2",
-//     dates: "22/12/21",
-//     comments: 6,
-//     views: 77,
-//   },
-//   {
-//     bnum: 3,
-//     category: "자유",
-//     title: "3번 글입니다.",
-//     writer: "writer3",
-//     contents: "dkfkfl3",
-//     dates: "22/12/21",
-//     comments: 0,
-//     views: 42,
-//   },
-//   {
-//     bnum: 4,
-//     category: "기타",
-//     title: "4번 글입니다.",
-//     writer: "writer4",
-//     contents: "dkfkfl4",
-//     dates: "22/12/21",
-//     comments: 4,
-//     views: 4,
-//   },
-//   {
-//     bnum: 5,
-//     category: "질문",
-//     title: "5번 글입니다.",
-//     writer: "writer5",
-//     contents: "dkfkfl5",
-//     dates: "22/12/21",
-//     comments: 2,
-//     views: 12,
-//   },
-// ]);
+console.log('BoardList - posts : ', data.Posts)
 
-// export default {
-//   setup() {
-//     // provide('posts', posts);
-    onMounted(() => {
-      console.log("마운트 성공");
-    });
-//     return {
-//       posts
-//     };
-//   },
-// };
+onMounted(() => {
+  console.log('마운트 성공')
+})
 </script>
 
 <template>
@@ -84,7 +24,7 @@ console.log("posts : ", data.Posts);
         </tr>
       </thead>
       <tbody id="tb_body">
-        <tr v-for="post in data.Posts">
+        <tr v-for="post in data.Posts" :key="post">
           <td><input type="checkbox" /></td>
           <td>{{ post.bnum }}</td>
           <td>{{ post.category }}</td>

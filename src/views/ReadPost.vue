@@ -1,10 +1,8 @@
 <template>
-    <h2>hello</h2>
-    <div>
-      {{ posts[$route.params].title }}
-    </div>
+  <h2>hello</h2>
+  <div>
+    {{ posts[$route.params].title }}
+  </div>
 </template>
 
-<script>
-
-</script>
+<script setup></script>

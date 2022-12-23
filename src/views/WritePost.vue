@@ -1,121 +1,56 @@
-<script>
-import { useRoute } from "vue-router";
-import data from "@/data";
+<script setup>
+import { ref } from 'vue'
+import data from '@/data'
 
 // ref -> number, string
 // reactive -> {}
 
 // const route = useRoute();
-console.log("board : ", data.Posts);
+console.log('WritePost - board : ', data.Posts)
 
-export default {
-  //   props: ['category', 'title', 'contents', 'writer'],
-  //   props: {
-  //     type: {
-  //       type: Object,
-  //       default: "post",
-  //       validator: (value) => {
-  //         return ["post"].includes(value);
-  //       },
-  //     },
-  //     category: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     title: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     contents: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     writer: {
-  //       type: String,
-  //       required: true,
-  //     },
-  //     obj: {
-  //       type: Object,
-  //       // default: {} -> x default: function() 형태로 해야 한다.
-  //       default: function () {
-  //         return {};
-  //       },
-  //     },
-  //   },
-  setup() {
-    //     console.log("title : ", props.title);
-    //     console.log("title : ", post.title);
-    //     console.log("contents : ", props.contents);
-    //     console.log("writer : ", props.writer);
-    let category = "";
+const catList = [
+  {
+    text: '질문',
+    value: '질문',
+  },
+  {
+    text: '자유',
+    value: '자유',
+  },
+  {
+    text: '기타',
+    value: '기타',
+  },
+]
 
+const post = ref({
+  category: '',
+  title: '',
+  writer: '',
+  contents: '',
+  dates: '22/12/22',
+  comments: 0,
+  views: 0,
+})
 
-    const catList = [
-      {
-        text: "말머리",
-        value: "c",
-      },
-      {
-        text: "질문",
-        value: "질문",
-      },
-      {
-        text: "자유",
-        value: "자유",
-      },
-      {
-        text: "기타",
-        value: "기타",
-      },
-    ];
+const addPost = () => {
+  console.log('before push --', data)
+  data.Posts.push(post.value)
+  console.log('after push --', data)
+}
 
-    const post = {
-      category: "",
-      title: "",
-      writer: "",
-      contents: "",
-      dates: "22/12/22",
-      comments: 0,
-      views: 0,
-    };
-
-    // const writingPost = (category, title, writer, contents) => {
-    //     console.log({category});
-    //     console.log(`{category}`);
-    //     console.log(category);
-    //     console.log(window.category);
-    //   post[category] = category;
-    //   post[title] = title;
-    //   post[writer] = writer;
-    //   post[contents] = contents;
-    // };
-
-    console.log("post", post);
-    return {
-        // category,
-        posts:data.Posts,
-        post,
-        // writingPost,
-        catList
-    };
-},
-};
+console.log('post', post)
 </script>
 
 <template>
-  <!-- <p>category : {{ posts[0] }}</p> -->
-  <!-- <p>category : {{ posts[posts.size] }}</p> 이건 안 됨 -->
+  <p>{{ post.category }}</p>
   <div class="card">
     <div class="row m-3">
       <div class="col-3">
-        <!-- <select v-model="category" required>
-          <option value="c" selected>말머리</option>
-          <option value="q">질문</option>
-          <option value="f">자유</option>
-          <option value="e">기타</option>
-        </select> -->
         <select v-model="post.category">
-            <option v-for="cat in catList" :value="cat.value">{{ cat.text }}</option>
+          <option v-for="cat in catList" :key="cat" :value="cat.value">
+            {{ cat.text }}
+          </option>
         </select>
       </div>
       <div class="col-7">
@@ -127,7 +62,12 @@ export default {
         />
       </div>
       <div class="col-2">
-        <input type="text" v-model="post.writer" placeholder="닉네임" style="width: 150px" />
+        <input
+          type="text"
+          v-model="post.writer"
+          placeholder="닉네임"
+          style="width: 150px"
+        />
       </div>
     </div>
     <div class="row p-3">
@@ -135,7 +75,8 @@ export default {
     </div>
     <div class="hstack gap-3">
       <div class="ms-auto">
-        <button @click="posts.push(post)">글등록</button>
+        <button @click="addPost()">글등록</button>
+        <button @click="data.push(post)">글등록2</button>
       </div>
       <div class="ms-auto">
         <button @click="$router.push('/')">글목록</button>

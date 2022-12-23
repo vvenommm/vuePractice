@@ -1,7 +1,7 @@
 <script setup>
-import HelloWorld from "./components/HelloWorld.vue";
-import TheWelcome from "./components/TheWelcome.vue";
-import BoardList from "./views/BoardList.vue";
+import HelloWorld from "./components/HelloWorld.vue" // ESLint는 세미콜론 안 씀
+import TheWelcome from "./components/TheWelcome.vue"
+import BoardList from "./views/BoardList.vue"
 
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
