@@ -1,6 +1,19 @@
 import { reactive } from 'vue';
 
 export default {
+	board: reactive({
+		posts: [],
+	}),
+	page: reactive({
+		content: '',
+		currentPage: 0,
+		endPage: 0,
+		startPage: 0,
+		total: 0,
+		totalPages: 0,
+		word: '',
+	}),
+
 	// Posts: reactive([
 	//   {
 	//     bnum: 1,
@@ -53,17 +66,4 @@ export default {
 	//     views: 12,
 	//   },
 	// ]),
-
-	board: reactive({
-		posts: [],
-		page: {
-			content: '',
-			currentPage: 0,
-			endPage: 0,
-			startPage: 0,
-			total: 0,
-			totalPages: 0,
-			word: '',
-		},
-	}),
 };

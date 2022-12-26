@@ -1,10 +1,10 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'; // ESLint는 세미콜론 안 씀
-import TheWelcome from './components/TheWelcome.vue';
+// import TheWelcome from './components/TheWelcome.vue';
 import BoardList from './views/BoardList.vue';
 
-import { useRoute, useRouter } from 'vue-router';
-import { inject } from 'vue';
+// import { useRoute, useRouter } from 'vue-router';
+// import { inject } from 'vue';
 
 // const route = useRoute();
 // console.log('route.path: {}', route.path);

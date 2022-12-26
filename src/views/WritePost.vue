@@ -59,46 +59,35 @@ console.log('post', post);
 </script>
 
 <template>
-	<p>{{ post.category }}</p>
-	<div class="card">
-		<div class="row m-3">
-			<div class="col-3">
-				<select v-model="post.category">
-					<option value="">-- 말머리 --</option>
-					<option v-for="cat in catList" :key="cat.text" :value="cat.value">
-						{{ cat.text }}
-					</option>
-				</select>
-			</div>
-			<div class="col-7">
-				<input
-					type="text"
-					v-model="post.title"
-					placeholder="제목을 입력해주세요."
-					style="width: 250px"
-				/>
-			</div>
-			<div class="col-2">
-				<input
-					type="text"
-					v-model="post.writer"
-					placeholder="닉네임"
-					style="width: 150px"
-				/>
-			</div>
+	<h2>글등록</h2>
+	<hr class="my-4" />
+	<form @submit.prevent>
+		<div class="mb-3">
+			<select v-model="post.category">
+				<option value="">-- 말머리 --</option>
+				<option v-for="cat in catList" :key="cat.text" :value="cat.value">
+					{{ cat.text }}
+				</option>
+			</select>
 		</div>
-		<div class="row p-3">
+		<div class="mb-3">
+			<label for="title" class="form-label">제목</label>
+			<input
+				type="text"
+				v-model="post.title"
+				placeholder="제목을 입력해주세요."
+			/>
+			<input type="text" v-model="post.writer" placeholder="닉네임" />
+		</div>
+		<div class="mb-3">
+			<label for="contents" class="form-label">내용</label>
 			<textarea v-model="post.contents" row="20" cols="50" required></textarea>
 		</div>
-		<div class="hstack gap-3">
-			<div class="ms-auto">
-				<button @click="addPost()">글등록</button>
-			</div>
-			<div class="ms-auto">
-				<button @click="$router.push('/')">글목록</button>
-			</div>
+		<div class="pt-4">
+			<button @click="addPost()">글등록</button>
+			<button @click="$router.push('/')">글목록</button>
 		</div>
-	</div>
+	</form>
 </template>
 
 <style>

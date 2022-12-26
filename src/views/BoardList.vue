@@ -1,24 +1,35 @@
 <script setup>
 import { toRef, ref, onMounted, reactive } from 'vue';
 import board from '@/data';
-import { getPosts } from '@/axios';
-import axios from 'axios';
+import page from '@/data';
+import { getPosts } from '@/api/posts';
 import { useRouter } from 'vue-router';
 
 console.log('여기는 보드리스트--------------------');
 console.log('서버에서 가져온 DB : ', board);
 
-onMounted(() => {
-	console.log('마운트 성공');
-	// getPosts();
-	axios.get('http://localhost:8080/main').then(response => {
-		console.log('boardList : ', response.data);
-		board.posts = response.data.posts;
-		board.page = response.data.page;
-		console.log('BoardList - board.posts : ', board.posts);
-		console.log('BoardList - board.page : ', board.page);
-	});
-});
+const fetchPosts = async () => {
+	const response = await getPosts();
+	console.log('getPosts return : ', response.data);
+	board.posts = response.data.posts;
+	page.value = response.data.page;
+	console.log('page : ', page.value);
+	console.log('posts : ', board.posts);
+};
+fetchPosts();
+
+// onMounted(() => {
+// console.log('마운트 성공');
+// // getPosts();
+// axios.get('http://localhost:8080/main').then(response => {
+// 	console.log('boardList : ', response.data);
+// 	board.posts = response.data.posts;
+// 	// board.page = response.data.page;
+// 	page.value = response.data.page;
+// 	console.log('BoardList - board.posts : ', board.posts);
+// 	console.log('BoardList - page.value : ', page.value);
+// });
+// });
 
 // const showCategory = post => {
 // 	console.log('computed on : ');
@@ -33,17 +44,16 @@ onMounted(() => {
 // }
 // };
 
-// const readPost = num => {
-// 	const router = useRouter();
-// 	router.push({
-// 		path: `/read/${num}`,
-// 	});
-// };
+const readPost = num => {
+	const router = useRouter();
+	router.push({
+		path: `/read/${num}`,
+	});
+};
 </script>
 
 <template>
-	<!-- {{ board.page.value }} -->
-
+	<h2>가나다라</h2>
 	<div id="tableDiv" class="card">
 		<table id="tb" class="tb table">
 			<thead id="tb_head">
@@ -66,11 +76,13 @@ onMounted(() => {
 					<td v-if="post.category === 'q'">질문</td>
 					<td v-if="post.category === 'f'">자유</td>
 					<td v-if="post.category === 'e'">기타</td>
-					<td :click="$router.push('/`${post.num}')">
+					<td>
 						<!-- <router-link to="/read/`post.num`">
 							{{ post.title }} ({{ post.commentCnt }})
 						</router-link> -->
-						<!-- <a :click="readPost(`${post.num}`)">{{ post.title }}</a> -->
+						<a @click="readPost(`${post.num}`)"
+							>{{ post.title }} ({{ post.commentCnt }})</a
+						>
 					</td>
 					<td>{{ post.nickname }}</td>
 					<td>{{ post.dates }}</td>
@@ -79,9 +91,10 @@ onMounted(() => {
 			</tbody>
 		</table>
 	</div>
+	<!-- <span v-if="board.page.currentPage == 1">tjdrhd</span> -->
 	<!-- <nav aria-label="Page navigation">
 		<ul class="pagination item-center">
-			<li class="page-item">
+			<li class="page-item"data>
 				<a
 					v-if="board.page.currentPage < 6"
 					class="page-link"
