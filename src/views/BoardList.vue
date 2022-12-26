@@ -2,7 +2,7 @@
 import { toRef, ref, onMounted, reactive } from 'vue';
 import board from '@/data';
 import page from '@/data';
-import { getPosts } from '@/api/posts';
+import { getPosts, getPostsWithPage } from '@/api/posts';
 import { useRouter } from 'vue-router';
 
 console.log('여기는 보드리스트--------------------');
@@ -17,19 +17,6 @@ const fetchPosts = async () => {
 	console.log('posts : ', board.posts);
 };
 fetchPosts();
-
-// onMounted(() => {
-// console.log('마운트 성공');
-// // getPosts();
-// axios.get('http://localhost:8080/main').then(response => {
-// 	console.log('boardList : ', response.data);
-// 	board.posts = response.data.posts;
-// 	// board.page = response.data.page;
-// 	page.value = response.data.page;
-// 	console.log('BoardList - board.posts : ', board.posts);
-// 	console.log('BoardList - page.value : ', page.value);
-// });
-// });
 
 // const showCategory = post => {
 // 	console.log('computed on : ');
@@ -77,12 +64,12 @@ const readPost = num => {
 					<td v-if="post.category === 'f'">자유</td>
 					<td v-if="post.category === 'e'">기타</td>
 					<td>
-						<!-- <router-link to="/read/`post.num`">
+						<router-link :to="`/read/${post.num}`">
 							{{ post.title }} ({{ post.commentCnt }})
-						</router-link> -->
-						<a @click="readPost(`${post.num}`)"
+						</router-link>
+						<!-- <a @click="readPost(`${post.num}`)"
 							>{{ post.title }} ({{ post.commentCnt }})</a
-						>
+						> -->
 					</td>
 					<td>{{ post.nickname }}</td>
 					<td>{{ post.dates }}</td>
@@ -91,12 +78,12 @@ const readPost = num => {
 			</tbody>
 		</table>
 	</div>
-	<!-- <span v-if="board.page.currentPage == 1">tjdrhd</span> -->
-	<!-- <nav aria-label="Page navigation">
+	<span v-if="page.currentPage == 1">1인가?</span>
+	<nav aria-label="Page navigation">
 		<ul class="pagination item-center">
-			<li class="page-item"data>
+			<li class="page-item" data>
 				<a
-					v-if="board.page.currentPage < 6"
+					v-if="page.currentPage < 6"
 					class="page-link"
 					href="#"
 					aria-label="Previous"
@@ -108,18 +95,18 @@ const readPost = num => {
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
-			<li class="page-item"><a class="page-link" href="#">1</a></li>
-			<li class="page-item"><a class="page-link" href="#">2</a></li>
-			<li class="page-item"><a class="page-link" href="#">3</a></li>
-			<li class="page-item"><a class="page-link" href="#">4</a></li>
-			<li class="page-item"><a class="page-link" href="#">5</a></li>
+			<li class="page-item" v-for="i in page.endPage">
+				<a href="" @click="getPostsWithPage(i)">1</a>
+			</li>
+			<!-- <li class="page-item"><a class="page-link" href="#">2</a></li> -->
+			<!-- <li class="page-item"><a class="page-link" href="#">3</a></li> -->
 			<li class="page-item">
 				<a class="page-link" href="#" aria-label="Next">
 					<span aria-hidden="true">&raquo;</span>
 				</a>
 			</li>
 		</ul>
-	</nav> -->
+	</nav>
 </template>
 
 <style scoped>
