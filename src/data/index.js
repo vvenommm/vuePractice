@@ -54,5 +54,7 @@ export default {
 	//   },
 	// ]),
 
-	Posts: reactive([]),
+	Posts: reactive({
+		list: [],
+	}),
 };

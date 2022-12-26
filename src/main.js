@@ -1,3 +1,4 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { createApp } from 'vue';
 import App from './App.vue';
 // import Vue from 'vue/dist/vue.esm-bundler.js';
@@ -11,3 +12,4 @@ const app = createApp(App);
 // app.config.globalProperties.$axios = axios; // 전역 변수로 선언하여 컴포넌트에서 this.$axios 호출 가능
 // app.config.globalProperties.$serverUrl = '//localhost:8080';
 app.use(router).mount('#app');
+import 'bootstrap/dist/js/bootstrap.js';
