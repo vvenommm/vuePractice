@@ -1,8 +1,6 @@
 <template>
 	<h2>hello</h2>
-	<div>
-		{{ posts[$route.params].title }}
-	</div>
+	<div>hello</div>
 </template>
 
 <script setup></script>

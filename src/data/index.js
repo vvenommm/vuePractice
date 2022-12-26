@@ -54,7 +54,16 @@ export default {
 	//   },
 	// ]),
 
-	Posts: reactive({
-		list: [],
+	board: reactive({
+		posts: [],
+		page: {
+			content: '',
+			currentPage: 0,
+			endPage: 0,
+			startPage: 0,
+			total: 0,
+			totalPages: 0,
+			word: '',
+		},
 	}),
 };

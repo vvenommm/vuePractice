@@ -16,7 +16,7 @@ const routes = [
 		component: WritePost,
 	},
 	{
-		path: '/read/:bnum',
+		path: '/read/:num',
 		name: 'Read',
 		component: ReadPost,
 	},

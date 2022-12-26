@@ -6,13 +6,13 @@ import BoardList from './views/BoardList.vue';
 import { useRoute, useRouter } from 'vue-router';
 import { inject } from 'vue';
 
-const route = useRoute();
+// const route = useRoute();
 // console.log('route.path: {}', route.path);
 
-const router = useRouter();
-const goWritePage = () => {
-	router.push('/write');
-};
+// const router = useRouter();
+// const goWritePage = () => {
+// 	router.push('/write');
+// };
 
 // created(){
 // const $axios = inject('$axios');

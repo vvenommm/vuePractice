@@ -1,39 +1,49 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue';
-import Posts from '@/data';
+import { toRef, ref, onMounted, reactive } from 'vue';
+import board from '@/data';
 import { getPosts } from '@/axios';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
-console.log('from data on boardList : ', Posts);
+console.log('여기는 보드리스트--------------------');
+console.log('서버에서 가져온 DB : ', board);
 
 onMounted(() => {
 	console.log('마운트 성공');
 	// getPosts();
-
 	axios.get('http://localhost:8080/main').then(response => {
 		console.log('boardList : ', response.data);
-		Posts.list = response.data.posts;
-		console.log('BoardList - Posts.list : ', Posts.list);
+		board.posts = response.data.posts;
+		board.page = response.data.page;
+		console.log('BoardList - board.posts : ', board.posts);
+		console.log('BoardList - board.page : ', board.page);
 	});
 });
 
-const cat = ref('');
+// const showCategory = post => {
+// 	console.log('computed on : ');
+// 	if (post.category === 'q') {
+// 		cat.value = '질문';
+// 	}
+// if (post.category === 'f') {
+// 	return '자유';
+// }
+// if (post.category === 'e') {
+// 	return '기타';
+// }
+// };
 
-const showCategory = post => {
-	console.log('computed on : ');
-	if (post.category === 'q') {
-		cat.value = '질문';
-	}
-	// if (post.category === 'f') {
-	// 	return '자유';
-	// }
-	// if (post.category === 'e') {
-	// 	return '기타';
-	// }
-};
+// const readPost = num => {
+// 	const router = useRouter();
+// 	router.push({
+// 		path: `/read/${num}`,
+// 	});
+// };
 </script>
 
 <template>
+	<!-- {{ board.page.value }} -->
+
 	<div id="tableDiv" class="card">
 		<table id="tb" class="tb table">
 			<thead id="tb_head">
@@ -49,14 +59,18 @@ const showCategory = post => {
 			</thead>
 			<tbody id="tb_body">
 				<!-- key는 항상 유일값으로 적어줌 v-model은 알아서 연결해줌. v-bind:~은 직접 연결이며 :~만 적어도 됨-->
-				<tr v-for="post in Posts.list" :key="post.num">
+				<tr v-for="post in board.posts" :key="post.num">
 					<td><input type="checkbox" /></td>
 					<td>{{ post.rownum }}</td>
-					<td>{{ post.category }}</td>
-					<td>
-						<router-link to="/read">
+					<!-- <td>{{ post.category }}</td> -->
+					<td v-if="post.category === 'q'">질문</td>
+					<td v-if="post.category === 'f'">자유</td>
+					<td v-if="post.category === 'e'">기타</td>
+					<td :click="$router.push('/`${post.num}')">
+						<!-- <router-link to="/read/`post.num`">
 							{{ post.title }} ({{ post.commentCnt }})
-						</router-link>
+						</router-link> -->
+						<!-- <a :click="readPost(`${post.num}`)">{{ post.title }}</a> -->
 					</td>
 					<td>{{ post.nickname }}</td>
 					<td>{{ post.dates }}</td>
@@ -65,11 +79,19 @@ const showCategory = post => {
 			</tbody>
 		</table>
 	</div>
-
-	<nav aria-label="Page navigation example">
+	<!-- <nav aria-label="Page navigation">
 		<ul class="pagination item-center">
 			<li class="page-item">
-				<a class="page-link" href="#" aria-label="Previous">
+				<a
+					v-if="board.page.currentPage < 6"
+					class="page-link"
+					href="#"
+					aria-label="Previous"
+					disabled
+				>
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+				<a v-else class="page-link" href="#" aria-label="Previous">
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
@@ -84,7 +106,7 @@ const showCategory = post => {
 				</a>
 			</li>
 		</ul>
-	</nav>
+	</nav> -->
 </template>
 
 <style scoped>
