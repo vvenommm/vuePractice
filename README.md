@@ -44,3 +44,6 @@ npm run lint
 .down
 .left
 .right
+
+### v-for
+key는 항상 유일값으로 적어줌 v-model은 알아서 연결해줌. v-bind:~은 직접 연결이며 :~만 적어도 됨
