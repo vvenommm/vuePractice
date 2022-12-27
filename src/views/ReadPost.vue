@@ -1,6 +1,12 @@
 <template>
 	<div class="mb-3">
-		<button class="float-end" @click="$router.push(`/${currentPage}`)">
+		<button
+			class="float-end"
+			@click="
+				$router.push(`/${currentPage}`);
+				currentPage != 1 ? (currentPage = 1) : '';
+			"
+		>
 			글목록
 		</button>
 	</div>
