@@ -1,29 +1,50 @@
 <script setup>
-import { toRef, ref, onMounted, reactive } from 'vue';
+import {
+	toRef,
+	ref,
+	onMounted,
+	reactive,
+	onBeforeUpdate,
+	onUpdated,
+	watch,
+	watchEffect,
+} from 'vue';
 import board from '@/data';
 import page from '@/data';
 import { getPosts } from '@/api/posts';
-import getPostsWithPage from '@/api/posts';
-import { useRouter } from 'vue-router';
+import { getPostsOfAnotherPage } from '@/api/posts';
+import { useRouter, useRoute } from 'vue-router';
 
 console.log('여기는 보드리스트--------------------');
 console.log('서버에서 가져온 DB : ', board);
 
+const route = useRoute();
+const router = useRouter();
 const startPage = ref([]);
 const currentPage = ref([]);
 const endPage = ref([]);
+const totalPage = ref([]);
+const pages = ref([]);
+
+console.log('route params ????? ', route.params);
 
 const fetchPosts = async () => {
-	const response = await getPosts();
+	const response = await getPosts(route.params.currentPage);
 	console.log('getPosts return : ', response.data);
-	board.posts = response.data.posts;
-	page.value = response.data.page;
-	console.log('page : ', page.value);
-	console.log('posts : ', board.posts);
 
-	startPage.value = page.value.startPage;
-	currentPage.value = page.value.currentPage;
-	endPage.value = page.value.endPage;
+	assignPosts(response);
+
+	// board.posts = response.data.posts;
+	// page.value = response.data.page;
+	// console.log('page : ', page.value);
+	// console.log('posts : ', board.posts);
+
+	// startPage.value = page.value.startPage;
+	// currentPage.value = page.value.currentPage;
+	// endPage.value = page.value.endPage;
+	// totalPage.value = page.value.totalPage;
+	// pages.value = response.data.pageList;
+	// console.log('페이지 리스트 : ', pages.value);
 };
 fetchPosts();
 
@@ -34,35 +55,110 @@ const readPost = num => {
 	// 	path: `/read/${currentPage.value}/${num}`,
 	// });
 };
+
+// watch(currentPage, (newPage, oldPage) => {
+// 	console.log('oldPage : ', oldPage);
+// 	console.log('newPage : ', newPage);
+// 	console.log('currentPage : ', currentPage);
+
+// 	const response = getPostsOfAnotherPage(newPage);
+// 	console.log('getPosts return : ', response.data);
+
+// 	assignPosts(response);
+// 	router.push({
+// 		path: `/${newPage}`,
+// 	});
+// });
+
+watch(async () => {
+	console.log('watcheffect@@@ ');
+	console.log('와치이펙트의 현재 페이지 값 : ', currentPage.value);
+
+	const response = await getPostsOfAnotherPage(currentPage.value);
+	console.log('getPosts return : ', response.data);
+
+	assignPosts(response);
+	router.push({
+		path: `/${currentPage.value}`,
+	});
+});
+
+const nextPage = () => {
+	console.log('nextPage work? : ');
+	console.log('endPage value : ', endPage.value);
+
+	currentPage.value = startPage.value + 5;
+};
+
+const moveToAnotherPage = pageNum => {
+	console.log('선택한 페이지 넘버 ', pageNum);
+	currentPage.value = pageNum;
+	// const response = await getPostsOfAnotherPage(pageNum);
+	// console.log('getPosts return : ', response.data);
+
+	// assignPosts(response);
+};
+
+const assignPosts = response => {
+	// console.log('assign Posts : ', response.data);
+	board.posts = response.data.posts;
+	page.value = response.data.page;
+	// console.log('page : ', page.value);
+	// console.log('posts : ', board.posts);
+
+	startPage.value = page.value.startPage;
+	currentPage.value = page.value.currentPage;
+	endPage.value = page.value.endPage;
+	totalPage.value = page.value.totalPage;
+	pages.value = response.data.pageList;
+	// console.log('페이지 리스트 : ', pages.value);
+};
+
+// onBeforeUpdate(() => {
+// 	console.log('before update');
+// });
+// onUpdated(() => {
+// 	console.log('updated');
+// });
 </script>
 
 <template>
+	{{ route.params }}
+	<div id="btnDiv" class="">
+		<router-link to="/write">
+			<button class="float-end btn btn-outline-warning">글쓰기</button>
+		</router-link>
+	</div>
 	<div id="tableDiv" class="card">
-		<table id="tb" class="tb table">
+		<table class="table table-hover table-nowrap mb-0" id="tb">
 			<thead id="tb_head">
 				<tr id="thead_tr">
-					<th></th>
-					<th>번호</th>
-					<th>말머리</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>작성일</th>
-					<th>조회수</th>
+					<th scope="col"></th>
+					<th scope="col">번호</th>
+					<th scope="col">말머리</th>
+					<th scope="col">제목</th>
+					<th scope="col">작성자</th>
+					<th scope="col">작성일</th>
+					<th scope="col">조회수</th>
 				</tr>
 			</thead>
 			<tbody id="tb_body">
-				<!-- key는 항상 유일값으로 적어줌 v-model은 알아서 연결해줌. v-bind:~은 직접 연결이며 :~만 적어도 됨-->
 				<tr v-for="post in board.posts" :key="post.num">
-					<td><input type="checkbox" /></td>
+					<td scope="row">
+						<div class="form-check">
+							<input
+								class="form-check-input"
+								type="checkbox"
+								id="inlineCheckbox2"
+								value="option1"
+							/>
+						</div>
+					</td>
 					<td>{{ post.rownum }}</td>
-					<!-- <td>{{ post.category }}</td> -->
 					<td v-if="post.category === 'q'">질문</td>
 					<td v-if="post.category === 'f'">자유</td>
 					<td v-if="post.category === 'e'">기타</td>
 					<td>
-						<!-- <router-link :to="`/read/${currentPage}/${post.num}`">
-							{{ post.title }} ({{ post.commentCnt }})
-						</router-link> -->
 						<router-link
 							:to="{
 								name: 'Read',
@@ -71,9 +167,6 @@ const readPost = num => {
 						>
 							{{ post.title }} ({{ post.commentCnt }})
 						</router-link>
-						<!-- <a href="" @click="readPost(post.num)">
-							{{ post.title }} ({{ post.commentCnt }})
-						</a> -->
 					</td>
 					<td>{{ post.nickname }}</td>
 					<td>{{ post.dates }}</td>
@@ -82,6 +175,8 @@ const readPost = num => {
 			</tbody>
 		</table>
 	</div>
+
+	<!-- ---------------------- 페이징 ---------------------- -->
 	<span v-if="currentPage == 1">1인가?</span>
 	<nav aria-label="Page navigation">
 		<ul class="pagination item-center">
@@ -99,12 +194,27 @@ const readPost = num => {
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
-			<li class="page-item" v-for="index in endPage" :key="index">
-				<a class="page-link" href="#">{{ index }}</a>
+			<!-- <li class="page-item" v-for="page in pages" :key="page"> -->
+			<!-- <a class="page-link warning" href="#">{{ page }}</a>  -->
+			<!-- <router-link
+					:to="{
+						name: 'Home',
+						params: { currentPage: page },
+					}"
+					><button class="page-link warning">
+						{{ page }}
+					</button>
+				</router-link>
+			</li> -->
+			<li class="page-item" v-for="page in pages" :key="page">
+				<!-- <a class="page-link warning" href="#">{{ page }}</a> -->
+				<button class="page-link warning" @click="moveToAnotherPage(`${page}`)">
+					{{ page }}
+				</button>
 			</li>
 			<li class="page-item">
 				<a
-					v-if="endPage < 6"
+					v-if="totalPage < 6"
 					class="page-link disabled"
 					href="#"
 					aria-label="Next"
@@ -112,7 +222,13 @@ const readPost = num => {
 				>
 					<span aria-hidden="true">&raquo;</span>
 				</a>
-				<a v-else class="page-link" href="#" aria-label="Next">
+				<a
+					v-else
+					class="page-link"
+					href="#"
+					aria-label="Next"
+					@click="nextPage(`${page}`)"
+				>
 					<span aria-hidden="true">&raquo;</span>
 				</a>
 			</li>
@@ -124,6 +240,10 @@ const readPost = num => {
 #tableDiv {
 	min-height: 390px;
 	min-width: 650px;
+}
+
+.warning {
+	color: #ffb914;
 }
 
 .tb {

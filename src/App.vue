@@ -38,8 +38,10 @@ import HelloWorld from './components/HelloWorld.vue'; // ESLint는 세미콜론 
 	</header>
 	<nav>
 		<div id="navBox">
-			<router-link to="/">Home</router-link> |
-			<router-link to="/write">글쓰기</router-link>
+			<router-link to="/1">
+				<button class="btn btn-outline-warning">Home</button>
+			</router-link>
+			<!-- <router-link to="/write">글쓰기</router-link> -->
 			<!-- 페이지 리로딩 없이 맵핑된 페이지 렌더링 -->
 		</div>
 	</nav>
@@ -97,5 +99,13 @@ main {
 
 #navBox {
 	text-align: center;
+}
+
+.btn-outline-warning {
+	border: 1px solid #ffb914;
+}
+
+.btn-outline-warning:hover {
+	background-color: #feede0;
 }
 </style>

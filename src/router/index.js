@@ -6,7 +6,7 @@ import ReadPost from '@/views/ReadPost.vue';
 const routes = [
 	// routes 배열에 들어가는 요소 중 필수적인 값은 path, component이고, 부수적으로 key:value 형태로 다른 정보 추가 가능
 	{
-		path: '/',
+		path: '/:currentPage',
 		name: 'Home',
 		component: BoardList,
 	},
@@ -19,6 +19,11 @@ const routes = [
 		path: '/read/:currentPage/num/:num',
 		name: 'Read',
 		component: ReadPost,
+	},
+	{
+		path: '/:currentPage/word/:word',
+		name: 'List',
+		component: BoardList,
 	},
 ];
 

@@ -6,7 +6,7 @@ export default {
 	}),
 	page: reactive({
 		content: '',
-		currentPage: 0,
+		currentPage: 1,
 		endPage: 0,
 		startPage: 0,
 		total: 0,

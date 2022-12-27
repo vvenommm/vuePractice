@@ -12,3 +12,4 @@ const app = createApp(App);
 // app.config.globalProperties.$serverUrl = '//localhost:8080';
 app.use(router).mount('#app');
 import 'bootstrap/dist/js/bootstrap.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
