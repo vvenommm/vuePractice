@@ -95,7 +95,7 @@ const readPost = num => {
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
-			<li class="page-item" v-for="i in page.endPage">
+			<li class="page-item" v-for="i in page.endPage" :key="i">
 				<a href="" @click="getPostsWithPage(i)">1</a>
 			</li>
 			<!-- <li class="page-item"><a class="page-link" href="#">2</a></li> -->
