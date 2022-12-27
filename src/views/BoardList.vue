@@ -28,15 +28,15 @@ const fetchPosts = async () => {
 fetchPosts();
 
 const readPost = num => {
-	const router = useRouter();
-	router.push({
-		path: `/read/${currentPage.value}/${num}`,
-	});
+	console.log('글번호 파라미터 ', num);
+	// const router = useRouter();
+	// router.push({
+	// 	path: `/read/${currentPage.value}/${num}`,
+	// });
 };
 </script>
 
 <template>
-	<h2>가나다라</h2>
 	<div id="tableDiv" class="card">
 		<table id="tb" class="tb table">
 			<thead id="tb_head">
@@ -60,9 +60,20 @@ const readPost = num => {
 					<td v-if="post.category === 'f'">자유</td>
 					<td v-if="post.category === 'e'">기타</td>
 					<td>
-						<router-link :to="`/read/${currentPage}/${post.num}`">
+						<!-- <router-link :to="`/read/${currentPage}/${post.num}`">
+							{{ post.title }} ({{ post.commentCnt }})
+						</router-link> -->
+						<router-link
+							:to="{
+								name: 'Read',
+								params: { currentPage: currentPage, num: post.num },
+							}"
+						>
 							{{ post.title }} ({{ post.commentCnt }})
 						</router-link>
+						<!-- <a href="" @click="readPost(post.num)">
+							{{ post.title }} ({{ post.commentCnt }})
+						</a> -->
 					</td>
 					<td>{{ post.nickname }}</td>
 					<td>{{ post.dates }}</td>
@@ -71,16 +82,16 @@ const readPost = num => {
 			</tbody>
 		</table>
 	</div>
-	<span v-if="page.currentPage == 1">1인가?</span>
+	<span v-if="currentPage == 1">1인가?</span>
 	<nav aria-label="Page navigation">
 		<ul class="pagination item-center">
 			<li class="page-item" data>
 				<a
-					v-if="page.currentPage < 6"
-					class="page-link"
+					v-if="currentPage < 6"
+					class="page-link disabled"
 					href="#"
 					aria-label="Previous"
-					disabled
+					aria-disabled="true"
 				>
 					<span aria-hidden="true">&laquo;</span>
 				</a>
@@ -92,7 +103,16 @@ const readPost = num => {
 				<a class="page-link" href="#">{{ index }}</a>
 			</li>
 			<li class="page-item">
-				<a class="page-link" href="#" aria-label="Next">
+				<a
+					v-if="endPage < 6"
+					class="page-link disabled"
+					href="#"
+					aria-label="Next"
+					area-disabled="true"
+				>
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+				<a v-else class="page-link" href="#" aria-label="Next">
 					<span aria-hidden="true">&raquo;</span>
 				</a>
 			</li>

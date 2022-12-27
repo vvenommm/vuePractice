@@ -6,6 +6,12 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
+import { toRef, ref, onMounted, reactive } from 'vue';
+import board from '@/data';
+import page from '@/data';
+import { getPosts } from '@/api/posts';
+import getPostsWithPage from '@/api/posts';
+import { useRouter } from 'vue-router';
 
 const route = useRoute();
 const currentPage = route.params.currentPage;
