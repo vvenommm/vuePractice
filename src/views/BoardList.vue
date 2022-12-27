@@ -2,11 +2,16 @@
 import { toRef, ref, onMounted, reactive } from 'vue';
 import board from '@/data';
 import page from '@/data';
-import { getPosts, getPostsWithPage } from '@/api/posts';
+import { getPosts } from '@/api/posts';
+import getPostsWithPage from '@/api/posts';
 import { useRouter } from 'vue-router';
 
 console.log('여기는 보드리스트--------------------');
 console.log('서버에서 가져온 DB : ', board);
+
+const startPage = ref([]);
+const currentPage = ref([]);
+const endPage = ref([]);
 
 const fetchPosts = async () => {
 	const response = await getPosts();
@@ -15,26 +20,17 @@ const fetchPosts = async () => {
 	page.value = response.data.page;
 	console.log('page : ', page.value);
 	console.log('posts : ', board.posts);
+
+	startPage.value = page.value.startPage;
+	currentPage.value = page.value.currentPage;
+	endPage.value = page.value.endPage;
 };
 fetchPosts();
-
-// const showCategory = post => {
-// 	console.log('computed on : ');
-// 	if (post.category === 'q') {
-// 		cat.value = '질문';
-// 	}
-// if (post.category === 'f') {
-// 	return '자유';
-// }
-// if (post.category === 'e') {
-// 	return '기타';
-// }
-// };
 
 const readPost = num => {
 	const router = useRouter();
 	router.push({
-		path: `/read/${num}`,
+		path: `/read/${currentPage.value}/${num}`,
 	});
 };
 </script>
@@ -64,12 +60,9 @@ const readPost = num => {
 					<td v-if="post.category === 'f'">자유</td>
 					<td v-if="post.category === 'e'">기타</td>
 					<td>
-						<router-link :to="`/read/${post.num}`">
+						<router-link :to="`/read/${currentPage}/${post.num}`">
 							{{ post.title }} ({{ post.commentCnt }})
 						</router-link>
-						<!-- <a @click="readPost(`${post.num}`)"
-							>{{ post.title }} ({{ post.commentCnt }})</a
-						> -->
 					</td>
 					<td>{{ post.nickname }}</td>
 					<td>{{ post.dates }}</td>
@@ -95,11 +88,9 @@ const readPost = num => {
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
-			<li class="page-item" v-for="i in page.endPage" :key="i">
-				<a href="" @click="getPostsWithPage(i)">1</a>
+			<li class="page-item" v-for="index in endPage" :key="index">
+				<a class="page-link" href="#">{{ index }}</a>
 			</li>
-			<!-- <li class="page-item"><a class="page-link" href="#">2</a></li> -->
-			<!-- <li class="page-item"><a class="page-link" href="#">3</a></li> -->
 			<li class="page-item">
 				<a class="page-link" href="#" aria-label="Next">
 					<span aria-hidden="true">&raquo;</span>
