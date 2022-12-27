@@ -1,14 +1,16 @@
 <script setup>
 import { ref } from 'vue';
 // import data from '@/data';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 // import axios from 'axios';
-import { writePost } from '@/api/posts';
+import { writePost, readPost } from '@/api/posts';
 
 // ref -> number, string
 // reactive -> {}
 
-// const route = useRoute();
+const route = useRoute();
+const num = ref(0);
+const comments = ref([]);
 // console.log('WritePost - board : ', data.Posts);
 
 const catList = [
@@ -36,6 +38,35 @@ const post = ref({
 	comments: 0,
 	views: 0,
 });
+
+const fetchPost = async () => {
+	const response = await readPost(route.params.currentPage, route.params.num);
+	console.log('editPost return : ', response.data);
+	post.value.num = response.data.num;
+	post.value.category = response.data.category;
+	post.value.title = response.data.title;
+	post.value.nickname = response.data.nickname;
+	post.value.dates = response.data.dates;
+	post.value.views = response.data.views;
+	post.value.contents = String(response.data.contents).replaceAll('\n', '<br>');
+	comments.value = response.data.commentList;
+	// for (const comment in comments.value) {
+	// 	console.log('댓글 : ', comment.value.contents);
+	// 	comment.value.contents = String(comment.value.contents).replaceAll(
+	// 		'\n',
+	// 		'<br>',
+	// 	);
+	// }
+	console.log('post : ', post.value);
+	console.log('comments : ', comments.value);
+};
+
+if (route.params.num != null) {
+	num.value = route.params.num;
+	fetchPost();
+	console.log('edit할 글 : ', post.value);
+	post.value.category = response.data.category;
+}
 
 const errors = ref([]);
 
@@ -90,6 +121,7 @@ console.log('post', post.value);
 </script>
 
 <template>
+	{{ route.params }}
 	<h2>글등록</h2>
 	<hr class="my-4" />
 	<form @submit.prevent>
@@ -112,7 +144,20 @@ console.log('post', post.value);
 		</div>
 		<div class="mb-3">
 			<label for="contents" class="form-label">내용</label>
-			<textarea v-model="post.contents" row="20" cols="50" required></textarea>
+			<textarea
+				v-if="num == 0"
+				v-model="post.contents"
+				row="20"
+				cols="50"
+				required
+			></textarea>
+			<textarea
+				v-if="num > 0"
+				v-model="post.contents"
+				row="20"
+				cols="50"
+				required
+			></textarea>
 		</div>
 		<div class="pt-4">
 			<button @click="addPost()">글등록</button>

@@ -1,4 +1,5 @@
 <template>
+	{{ route.params }}
 	<div class="mb-3">
 		<button
 			class="float-end"
@@ -8,6 +9,17 @@
 			"
 		>
 			글목록
+		</button>
+		<button
+			class="float-end"
+			@click="
+				$router.push({
+					name: 'Edit',
+					params: { currentPage: currentPage, num: route.params.num },
+				})
+			"
+		>
+			수정
 		</button>
 	</div>
 
@@ -87,6 +99,9 @@
 			</div>
 		</div>
 	</div>
+	<div class="mb-3">
+		<button class="float-end" @click="del">삭제</button>
+	</div>
 </template>
 
 <script setup>
@@ -94,7 +109,7 @@ import { useRoute } from 'vue-router';
 import { toRef, ref, onMounted, reactive } from 'vue';
 import board from '@/data';
 import page from '@/data';
-import { readPost } from '@/api/posts';
+import { readPost, delPost } from '@/api/posts';
 import { useRouter } from 'vue-router';
 
 const route = useRoute();
@@ -126,6 +141,11 @@ const fetchPost = async () => {
 	console.log('comments : ', comments.value);
 };
 fetchPost();
+
+const del = () => {
+	const response = delPost(post.value.num);
+	console.log('삭제 결과 : ', response.data);
+};
 </script>
 
 <style scoped>

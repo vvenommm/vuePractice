@@ -177,7 +177,7 @@ const assignPosts = response => {
 	</div>
 
 	<!-- ---------------------- 페이징 ---------------------- -->
-	<span v-if="currentPage == 1">1인가?</span>
+	<!-- <span v-if="currentPage == 1">1인가?</span> -->
 	<nav aria-label="Page navigation">
 		<ul class="pagination item-center">
 			<li class="page-item" data>
@@ -190,7 +190,7 @@ const assignPosts = response => {
 				>
 					<span aria-hidden="true">&laquo;</span>
 				</a>
-				<a v-else class="page-link" href="#" aria-label="Previous">
+				<a v-else class="page-link link-warning" href="#" aria-label="Previous">
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
@@ -224,7 +224,7 @@ const assignPosts = response => {
 				</a>
 				<a
 					v-else
-					class="page-link"
+					class="page-link link-warning"
 					href="#"
 					aria-label="Next"
 					@click="nextPage(`${page}`)"

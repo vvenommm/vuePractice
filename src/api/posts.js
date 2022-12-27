@@ -19,3 +19,9 @@ export function writePost(post) {
 	return axios.post('http://localhost:8080/writePost', post.value);
 	// return axios.post('http://localhost:8080/writePost', post);
 }
+
+export function delPost(num) {
+	const numArr = [num];
+	console.log('삭제할 글 번호 : ', numArr);
+	return axios.post('http://localhost:8080/delete', numArr);
+}

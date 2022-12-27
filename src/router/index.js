@@ -11,19 +11,24 @@ const routes = [
 		component: BoardList,
 	},
 	{
+		path: '/:currentPage/word/:word',
+		name: 'List',
+		component: BoardList,
+	},
+	{
 		path: '/write',
 		name: 'Wirte',
+		component: WritePost,
+	},
+	{
+		path: '/write/:currentPage/num/:num',
+		name: 'Edit',
 		component: WritePost,
 	},
 	{
 		path: '/read/:currentPage/num/:num',
 		name: 'Read',
 		component: ReadPost,
-	},
-	{
-		path: '/:currentPage/word/:word',
-		name: 'List',
-		component: BoardList,
 	},
 ];
 
