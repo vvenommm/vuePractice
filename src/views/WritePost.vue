@@ -80,6 +80,9 @@ const addPost = async () => {
 		}
 	} else {
 		const router = useRouter();
+		router.push({
+			path: `/read/1/${response.data.post.num}`,
+		});
 	}
 };
 

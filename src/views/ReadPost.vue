@@ -44,9 +44,7 @@
 		</div>
 		<div class="card-body">
 			<div class="card">
-				<div class="card-body">
-					{{ post.contents }}
-				</div>
+				<div class="card-body" v-html="post.contents"></div>
 			</div>
 			<div class="card border">
 				<!-- <div class="card-header">댓글</div> -->
@@ -69,7 +67,7 @@
 							<tr v-for="comment in comments" :key="comment.cnum">
 								<td>{{ comment.cnum }}</td>
 								<td>{{ comment.writer }}</td>
-								<td>{{ comment.contents }}</td>
+								<td v-html="comment.contents"></td>
 								<td>
 									<div class="hstack gap-3 fs-15">
 										<a href="javascript:void(0);" class="link-primary"
@@ -115,8 +113,15 @@ const fetchPost = async () => {
 	post.value.nickname = response.data.nickname;
 	post.value.dates = response.data.dates;
 	post.value.views = response.data.views;
-	post.value.contents = response.data.contents;
+	post.value.contents = String(response.data.contents).replaceAll('\n', '<br>');
 	comments.value = response.data.commentList;
+	// for (const comment in comments.value) {
+	// 	console.log('댓글 : ', comment.value.contents);
+	// 	comment.value.contents = String(comment.value.contents).replaceAll(
+	// 		'\n',
+	// 		'<br>',
+	// 	);
+	// }
 	console.log('post : ', post.value);
 	console.log('comments : ', comments.value);
 };
