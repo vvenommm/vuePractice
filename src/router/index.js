@@ -30,6 +30,7 @@ const routes = [
 		name: 'Read',
 		component: ReadPost,
 	},
+	{ parh: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
 
 const router = createRouter({
