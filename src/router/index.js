@@ -16,7 +16,7 @@ const routes = [
 		component: BoardList,
 	},
 	{
-		path: '/write',
+		path: '/write/:currentPage',
 		name: 'Wirte',
 		component: WritePost,
 	},

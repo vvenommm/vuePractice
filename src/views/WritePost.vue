@@ -1,3 +1,66 @@
+<template>
+	{{ route.params }}
+	<h2>글등록</h2>
+	<hr class="my-4" />
+	<form @submit.prevent>
+		<div class="mb-3">
+			<select v-model="post.category">
+				<option value="">-- 말머리 --</option>
+				<option v-for="cat in catList" :key="cat.text" :value="cat.value">
+					{{ cat.text }}
+				</option>
+			</select>
+		</div>
+		<div class="mb-3">
+			<label for="title" class="form-label">제목</label>
+			<input
+				type="text"
+				v-model="post.title"
+				placeholder="제목을 입력해주세요."
+			/>
+			<input type="text" v-model="post.nickname" placeholder="닉네임" />
+		</div>
+		<div class="mb-3">
+			<label for="contents" class="form-label">내용</label>
+			<textarea
+				v-if="num == 0"
+				v-model="post.contents"
+				row="20"
+				cols="50"
+				required
+			></textarea>
+			<textarea
+				v-if="num > 0"
+				v-model="post.contents"
+				row="20"
+				cols="50"
+				required
+			></textarea>
+		</div>
+		<div class="pt-4">
+			<button class="btn btn-outline-warning" @click="addPost">글등록</button>
+		</div>
+	</form>
+	<div class="float-end pt-4">
+		<button
+			class="btn btn-outline-warning"
+			@click="
+				$router.push({ name: 'Home', params: { currentPage: currentPage } })
+			"
+		>
+			글목록
+		</button>
+		<router-link
+			:to="{
+				name: 'Home',
+				params: { currentPage: currentPage },
+			}"
+		>
+			<button class="btn btn-outline-warning">글목록2</button>
+		</router-link>
+	</div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 // import data from '@/data';
@@ -11,6 +74,8 @@ import { writePost, readPost } from '@/api/posts';
 const route = useRoute();
 const num = ref(0);
 const comments = ref([]);
+const currentPage = ref();
+currentPage.value = route.params.currentPage;
 // console.log('WritePost - board : ', data.Posts);
 
 const catList = [
@@ -117,54 +182,12 @@ const addPost = async () => {
 	}
 };
 
+const backToList = () => {
+	console.log(route.params);
+};
+
 console.log('post', post.value);
 </script>
-
-<template>
-	{{ route.params }}
-	<h2>글등록</h2>
-	<hr class="my-4" />
-	<form @submit.prevent>
-		<div class="mb-3">
-			<select v-model="post.category">
-				<option value="">-- 말머리 --</option>
-				<option v-for="cat in catList" :key="cat.text" :value="cat.value">
-					{{ cat.text }}
-				</option>
-			</select>
-		</div>
-		<div class="mb-3">
-			<label for="title" class="form-label">제목</label>
-			<input
-				type="text"
-				v-model="post.title"
-				placeholder="제목을 입력해주세요."
-			/>
-			<input type="text" v-model="post.nickname" placeholder="닉네임" />
-		</div>
-		<div class="mb-3">
-			<label for="contents" class="form-label">내용</label>
-			<textarea
-				v-if="num == 0"
-				v-model="post.contents"
-				row="20"
-				cols="50"
-				required
-			></textarea>
-			<textarea
-				v-if="num > 0"
-				v-model="post.contents"
-				row="20"
-				cols="50"
-				required
-			></textarea>
-		</div>
-		<div class="pt-4">
-			<button @click="addPost()">글등록</button>
-			<button @click="$router.push('/')">글목록</button>
-		</div>
-	</form>
-</template>
 
 <style>
 h1 {
@@ -173,5 +196,16 @@ h1 {
 
 .card {
 	width: 840px;
+}
+
+.btn-outline-warning {
+	color: #fa7204;
+	--bs-btn-border-color: #fa7204;
+	--bs-btn-hover-bg: #fff7f1;
+	--bs-btn-hover-color: #000000;
+	--bs-btn-hover-border-color: #fa7204;
+	--bs-btn-active-color: #000;
+	--bs-btn-active-bg: #fff7f1;
+	--bs-btn-active-border-color: #fa7204;
 }
 </style>

@@ -20,40 +20,66 @@ console.log('서버에서 가져온 DB : ', board);
 
 const route = useRoute();
 const router = useRouter();
-const startPage = ref([]);
-const currentPage = ref([]);
-const endPage = ref([]);
-const totalPage = ref([]);
+const startPage = ref();
+const currentPage = ref(1);
+const endPage = ref();
+const totalPage = ref();
 const pages = ref([]);
 
 console.log('route params ????? ', route.params);
+// currentPage.value = route.params.currentPage;
 
-const fetchPosts = async () => {
-	const response = await getPosts(route.params.currentPage);
+if (route.params.currentPage != null) {
+	currentPage.value = route.params.currentPage;
+}
+
+watchEffect(async () => {
+	console.log('watcheffect@@@ ');
+	console.log('와치이펙트의 현재 페이지 값 : ', currentPage.value);
+
+	const response = await getPostsOfAnotherPage(currentPage.value);
 	console.log('getPosts return : ', response.data);
+	setPosts(response);
 
-	assignPosts(response);
+	router.push({
+		path: `/${currentPage.value}`,
+	});
+});
 
-	// board.posts = response.data.posts;
-	// page.value = response.data.page;
+// const fetchPosts = async () => {
+// 	// const response = await getPosts();
+// 	const response = await getPostsOfAnotherPage(route.params.currentPage);
+// 	console.log('getPosts return : ', response.data);
+
+// 	setPosts(response);
+
+// 	// board.posts = response.data.posts;
+// 	// page.value = response.data.page;
+// 	// console.log('page : ', page.value);
+// 	// console.log('posts : ', board.posts);
+
+// 	// startPage.value = page.value.startPage;
+// 	// currentPage.value = page.value.currentPage;
+// 	// endPage.value = page.value.endPage;
+// 	// totalPage.value = page.value.totalPage;
+// 	// pages.value = response.data.pageList;
+// 	// console.log('페이지 리스트 : ', pages.value);
+// };
+// fetchPosts();
+
+const setPosts = response => {
+	// console.log('assign Posts : ', response.data);
+	board.posts = response.data.posts;
+	page.value = response.data.page;
 	// console.log('page : ', page.value);
 	// console.log('posts : ', board.posts);
 
-	// startPage.value = page.value.startPage;
-	// currentPage.value = page.value.currentPage;
-	// endPage.value = page.value.endPage;
-	// totalPage.value = page.value.totalPage;
-	// pages.value = response.data.pageList;
+	startPage.value = page.value.startPage;
+	currentPage.value = page.value.currentPage;
+	endPage.value = page.value.endPage;
+	totalPage.value = page.value.totalPage;
+	pages.value = response.data.pageList;
 	// console.log('페이지 리스트 : ', pages.value);
-};
-fetchPosts();
-
-const readPost = num => {
-	console.log('글번호 파라미터 ', num);
-	// const router = useRouter();
-	// router.push({
-	// 	path: `/read/${currentPage.value}/${num}`,
-	// });
 };
 
 // watch(currentPage, (newPage, oldPage) => {
@@ -70,24 +96,19 @@ const readPost = num => {
 // 	});
 // });
 
-watch(async () => {
-	console.log('watcheffect@@@ ');
-	console.log('와치이펙트의 현재 페이지 값 : ', currentPage.value);
-
-	const response = await getPostsOfAnotherPage(currentPage.value);
-	console.log('getPosts return : ', response.data);
-
-	assignPosts(response);
-	router.push({
-		path: `/${currentPage.value}`,
-	});
-});
-
 const nextPage = () => {
 	console.log('nextPage work? : ');
+	console.log('startPage value : ', startPage.value);
 	console.log('endPage value : ', endPage.value);
 
 	currentPage.value = startPage.value + 5;
+};
+
+const beforePage = () => {
+	console.log('its beforePage');
+	console.log('startPage value : ', startPage.value);
+	console.log('endPage value : ', endPage.value);
+	currentPage.value = startPage.value - 5;
 };
 
 const moveToAnotherPage = pageNum => {
@@ -97,21 +118,6 @@ const moveToAnotherPage = pageNum => {
 	// console.log('getPosts return : ', response.data);
 
 	// assignPosts(response);
-};
-
-const assignPosts = response => {
-	// console.log('assign Posts : ', response.data);
-	board.posts = response.data.posts;
-	page.value = response.data.page;
-	// console.log('page : ', page.value);
-	// console.log('posts : ', board.posts);
-
-	startPage.value = page.value.startPage;
-	currentPage.value = page.value.currentPage;
-	endPage.value = page.value.endPage;
-	totalPage.value = page.value.totalPage;
-	pages.value = response.data.pageList;
-	// console.log('페이지 리스트 : ', pages.value);
 };
 
 // onBeforeUpdate(() => {
@@ -125,9 +131,14 @@ const assignPosts = response => {
 <template>
 	{{ route.params }}
 	<div id="btnDiv" class="">
-		<router-link to="/write">
-			<button class="float-end btn btn-outline-warning">글쓰기</button>
-		</router-link>
+		<!-- <router-link to="/write/${currentPage.value}"> -->
+		<button
+			class="float-end btn btn-outline-warning"
+			@click="$router.push(`/write/${currentPage}`)"
+		>
+			글쓰기
+		</button>
+		<!-- </router-link> -->
 	</div>
 	<div id="tableDiv" class="card">
 		<table class="table table-hover table-nowrap mb-0" id="tb">
@@ -190,7 +201,13 @@ const assignPosts = response => {
 				>
 					<span aria-hidden="true">&laquo;</span>
 				</a>
-				<a v-else class="page-link link-warning" href="#" aria-label="Previous">
+				<a
+					v-else
+					@click="beforePage"
+					class="page-link btn-outline-warning"
+					href="#"
+					aria-label="Previous"
+				>
 					<span aria-hidden="true">&laquo;</span>
 				</a>
 			</li>
@@ -208,7 +225,11 @@ const assignPosts = response => {
 			</li> -->
 			<li class="page-item" v-for="page in pages" :key="page">
 				<!-- <a class="page-link warning" href="#">{{ page }}</a> -->
-				<button class="page-link warning" @click="moveToAnotherPage(`${page}`)">
+				<button
+					class="page-link btn-outline-warning"
+					@click="moveToAnotherPage(`${page}`)"
+					:class="currentPage == page ? 'btnActive' : ''"
+				>
 					{{ page }}
 				</button>
 			</li>
@@ -224,10 +245,10 @@ const assignPosts = response => {
 				</a>
 				<a
 					v-else
-					class="page-link link-warning"
+					class="page-link btn-outline-warning"
 					href="#"
 					aria-label="Next"
-					@click="nextPage(`${page}`)"
+					@click="nextPage()"
 				>
 					<span aria-hidden="true">&raquo;</span>
 				</a>
@@ -242,8 +263,19 @@ const assignPosts = response => {
 	min-width: 650px;
 }
 
-.warning {
-	color: #ffb914;
+.btn-outline-warning {
+	color: #fa7204;
+	--bs-btn-border-color: #fa7204;
+	--bs-btn-hover-bg: #fff7f1;
+	--bs-btn-hover-color: #000000;
+	--bs-btn-hover-border-color: #fa7204;
+	--bs-btn-active-color: #000;
+	--bs-btn-active-bg: #fff7f1;
+	--bs-btn-active-border-color: #fa7204;
+}
+
+.table {
+	--bs-table-hover-bg: #feede0;
 }
 
 .tb {
@@ -260,7 +292,8 @@ tr {
 
 th {
 	text-align: center;
-	background-color: #ffb914;
+	/* background-color: #fac599; */
+	background-color: #feede0;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
@@ -273,7 +306,7 @@ td {
 }
 
 tbody tr:hover {
-	background-color: #feede0;
+	background-color: #fffaf5;
 }
 
 th:nth-child(1) {
@@ -315,5 +348,11 @@ td:nth-child(4) {
 
 div {
 	place-items: center;
+}
+
+.btnActive {
+	font-weight: bold;
+	color: #fa7204;
+	background-color: #fae4d4;
 }
 </style>

@@ -101,11 +101,22 @@ main {
 	text-align: center;
 }
 
-.btn-outline-warning {
+/* .btn-outline-warning {
 	border: 1px solid #ffb914;
 }
 
 .btn-outline-warning:hover {
 	background-color: #feede0;
+} */
+
+.btn-outline-warning {
+	color: #fa7204;
+	--bs-btn-border-color: #fa7204;
+	--bs-btn-hover-bg: #fff7f1;
+	--bs-btn-hover-color: #000000;
+	--bs-btn-hover-border-color: #fa7204;
+	--bs-btn-active-color: #000;
+	--bs-btn-active-bg: #fff7f1;
+	--bs-btn-active-border-color: #fa7204;
 }
 </style>
