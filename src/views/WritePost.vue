@@ -72,7 +72,7 @@
 				params: { currentPage: currentPage },
 			}"
 		>
-			<button class="btn btn-outline-warning">글목록2</button>
+			<button class="btn btn-warning">글목록2</button>
 		</router-link>
 	</div>
 </template>
@@ -212,16 +212,5 @@ h1 {
 
 .card {
 	width: 840px;
-}
-
-.btn-outline-warning {
-	color: #fa7204;
-	--bs-btn-border-color: #fa7204;
-	--bs-btn-hover-bg: #fff7f1;
-	--bs-btn-hover-color: #000000;
-	--bs-btn-hover-border-color: #fa7204;
-	--bs-btn-active-color: #000;
-	--bs-btn-active-bg: #fff7f1;
-	--bs-btn-active-border-color: #fa7204;
 }
 </style>

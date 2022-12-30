@@ -264,7 +264,7 @@ const moveToAnotherPage = pageNum => {
 }
 
 .btn-outline-warning {
-	color: #fa7204;
+	--bs-btn-color: #fa7204;
 	--bs-btn-border-color: #fa7204;
 	--bs-btn-hover-bg: #fff7f1;
 	--bs-btn-hover-color: #000000;
