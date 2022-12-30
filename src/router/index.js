@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import BoardList from '@/views/BoardList.vue';
 import WritePost from '@/views/WritePost.vue';
 import ReadPost from '@/views/ReadPost.vue';
+import NotFound from '@/views/NotFound.vue';
 
 const routes = [
 	// routes 배열에 들어가는 요소 중 필수적인 값은 path, component이고, 부수적으로 key:value 형태로 다른 정보 추가 가능
@@ -30,7 +31,7 @@ const routes = [
 		name: 'Read',
 		component: ReadPost,
 	},
-	{ parh: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
+	{ path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
 
 const router = createRouter({
